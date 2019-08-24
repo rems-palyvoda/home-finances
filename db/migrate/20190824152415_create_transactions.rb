@@ -6,7 +6,7 @@ class CreateTransactions < ActiveRecord::Migration[6.0]
       t.string      :category
       t.string      :description
       t.string      :photo
-      t.integer     :type
+      t.integer     :direction
       t.references  :user
 
       t.timestamps
