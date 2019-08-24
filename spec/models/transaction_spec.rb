@@ -11,4 +11,12 @@ RSpec.describe Transaction, type: :model do
   it { is_expected.to belong_to :user }
 
   it { should define_enum_for(:direction).with_values(%i[expence income]) }
+
+  describe 'default factory' do
+    let(:transaction) { build :transaction }
+
+    subject { transaction.valid? }
+
+    it { should be_truthy }
+  end
 end
