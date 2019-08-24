@@ -13,7 +13,7 @@
 ActiveRecord::Schema.define(version: 2019_08_24_153830) do
 
   create_table "transactions", force: :cascade do |t|
-    t.string "name"
+    t.string "title"
     t.integer "price_cents", default: 0, null: false
     t.string "price_currency", default: "UAH", null: false
     t.string "category"

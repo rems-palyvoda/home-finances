@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :transaction do
     user
-    name { 'Transaction' }
+    title { 'Transaction' }
     direction { Transaction.directions.keys.sample }
   end
 end

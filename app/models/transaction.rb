@@ -3,7 +3,7 @@
 class Transaction < ApplicationRecord
   after_initialize :default_values
 
-  validates :name, presence: true
+  validates :title, presence: true
   validates :price_cents, presence: true
   validates :price_currency, presence: true
   validates :direction, presence: true
