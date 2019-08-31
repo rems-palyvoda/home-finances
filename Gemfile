@@ -32,6 +32,8 @@ group :development, :test do
   gem 'faker', git: 'https://github.com/faker-ruby/faker.git', branch: 'master'
   gem 'pry-rails'
   gem 'rspec-rails', '~> 3.8'
+  gem 'rubocop'
+  gem 'rubocop-rspec'
 end
 
 group :development do
