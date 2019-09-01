@@ -12,6 +12,16 @@ class TransactionsController < ApplicationController
     json_response @transaction
   end
 
+  def create
+    @transaction = Transaction.new transaction_params
+    if @transaction.save
+      json_response @transaction, status: :created
+    else
+      message = {validation_errors: @transaction.errors}
+      json_response message, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def set_transaction
