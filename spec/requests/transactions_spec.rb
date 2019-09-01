@@ -8,7 +8,7 @@ RSpec.describe 'Transactions API', type: :request do
   let!(:transactions) { create_list :transaction, transactions_count, user: user }
 
   describe 'GET /transactions' do
-    before { get '/transactions' }
+    before { get '/transactions', params: { transaction: {user_id: user.id}} }
 
     it 'returns trsansactions' do
       expect(json).not_to be_empty
