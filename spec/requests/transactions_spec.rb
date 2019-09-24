@@ -20,6 +20,30 @@ RSpec.describe 'Transactions API', type: :request do
     end
   end
 
+  describe 'GET /transaction/:id' do
+    before { get "/transactions/#{id}", params: { transaction: {user_id: user.id}} }
+
+    context 'when transaction present' do
+      let(:id) { transactions.last.id }
+
+      it 'returns status ok' do
+        expect(response).to have_http_status(200)
+      end
+
+      it 'returns transaction' do
+        expect(json['id']).to eq(id)
+      end
+    end
+
+    context 'when transaction absent' do
+      let(:id) { 999 }
+
+      it 'returns status not found' do
+        expect(response).to have_http_status(404)
+      end
+    end
+  end
+
   describe 'POST /transactions' do
     before { post '/transactions', params: params }
 
@@ -36,7 +60,7 @@ RSpec.describe 'Transactions API', type: :request do
     end
 
     context 'when invalid params' do
-      let(:params) { {transaction: {user_id: user.id}} }
+      let(:params) { { transaction: { user_id: user.id } } }
 
       it 'returns status :unprocessable_entity' do
         expect(response).to have_http_status(422)
