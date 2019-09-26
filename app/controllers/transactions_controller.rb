@@ -18,15 +18,31 @@ class TransactionsController < ApplicationController
     if @transaction.save
       json_response @transaction, status: :created
     else
-      message = {validation_errors: @transaction.errors}
+      message = { validation_errors: @transaction.errors }
       json_response message, status: :unprocessable_entity
     end
+  end
+
+  def update
+    if @transaction.update transaction_params
+      json_response @transaction, status: :ok
+    else
+      message = { validation_errors: @transaction.errors }
+      json_response message, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    @transaction.destroy
+    head :no_content
   end
 
   private
 
   def set_user
-    @current_user = User.includes(:transactions).find(transaction_params[:user_id])
+    @current_user = User
+                    .includes(:transactions)
+                    .find(transaction_params[:user_id])
   end
 
   def set_transaction

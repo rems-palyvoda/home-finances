@@ -3,16 +3,15 @@
 require 'rails_helper'
 
 RSpec.describe 'Transactions API', type: :request do
-  let(:transactions_count) { 3 }
   let(:user) { create :user }
-  let!(:transactions) { create_list :transaction, transactions_count, user: user }
+  let!(:transaction) { create :transaction, user: user }
 
   describe 'GET /transactions' do
-    before { get '/transactions', params: { transaction: {user_id: user.id}} }
+    before { get '/transactions', params: { transaction: { user_id: user.id } } }
 
     it 'returns trsansactions' do
       expect(json).not_to be_empty
-      expect(json.size).to eq(transactions_count)
+      expect(json.size).to eq(1)
     end
 
     it 'returns status code 200' do
@@ -21,10 +20,10 @@ RSpec.describe 'Transactions API', type: :request do
   end
 
   describe 'GET /transaction/:id' do
-    before { get "/transactions/#{id}", params: { transaction: {user_id: user.id}} }
+    before { get "/transactions/#{id}", params: { transaction: { user_id: user.id } } }
 
     context 'when transaction present' do
-      let(:id) { transactions.last.id }
+      let(:id) { transaction.id }
 
       it 'returns status ok' do
         expect(response).to have_http_status(200)
@@ -48,14 +47,15 @@ RSpec.describe 'Transactions API', type: :request do
     before { post '/transactions', params: params }
 
     context 'when valid params' do
-      let(:params) { {transaction: {user_id: user.id, title: 'new transaction', direction: 'expence'}} }
+      let(:title) { 'new transaction' }
+      let(:params) { {transaction: {user_id: user.id, title: title, direction: 'expence'}} }
 
       it 'returns status ok' do
         expect(response).to have_http_status(201)
       end
 
       it 'returns transaction' do
-        expect(json.keys).to eq %w[id title price_cents price_currency category description photo direction user_id created_at updated_at]
+        expect(json['title']).to eq(title)
       end
     end
 
@@ -69,6 +69,33 @@ RSpec.describe 'Transactions API', type: :request do
       it 'returns error message' do
         expect(json.keys).to include('validation_errors')
       end
+    end
+  end
+
+  describe 'PUT /transactions/:id' do
+    let(:title) { 'updated_title' }
+    let(:id) { transaction.id }
+    let(:params) { { transaction: { user_id: user.id, title: title } } }
+
+    before { put "/transactions/#{id}", params: params }
+
+    it 'returns status updated' do
+      expect(response).to have_http_status(200)
+    end
+
+    it 'returns updated transaction' do
+      expect(json['title']).to eq(title)
+    end
+  end
+
+  describe 'DELETE /transactions/:id' do
+    let(:id) { transaction.id }
+    let(:params) { { transaction: { user_id: user.id } } }
+
+    before { delete "/transactions/#{id}", params: params }
+
+    it 'returns status no content' do
+      expect(response).to have_http_status(204)
     end
   end
 end
