@@ -3,22 +3,15 @@
 This README would normally document whatever steps are necessary to get the
 application up and running.
 
-Things you may want to cover:
+https://scotch.io/tutorials/build-a-restful-json-api-with-rails-5-part-two
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+# Attempt to access API without a token
+$ http :3000/transactions
+# Signup a new user - get token from here
+$ http :3000/signup name=ash email=ash@email.com password=foobar password_confirmation=foobar
+# Get new user transactions
+$ http :3000/transactions Authorization:'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozLCJleHAiOjE0ODg5MDEyNjR9.7txvLgDzFdX5NIUGYb3W45oNIXinwB_ITu3jdlG5Dds'
+# create transaction for new user
+$ http POST :3000/transactions title=Beethoven direction='expence' Authorization:'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozLCJleHAiOjE0ODg5MDEyNjR9.7txvLgDzFdX5NIUGYb3W45oNIXinwB_ITu3jdlG5Dds'
+# Get created transactions
+$ http :3000/transactions Authorization:'eyJ0eXAiOiJKV1QiLC
