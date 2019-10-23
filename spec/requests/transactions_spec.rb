@@ -5,9 +5,10 @@ require 'rails_helper'
 RSpec.describe 'Transactions API', type: :request do
   let(:user) { create :user }
   let!(:transaction) { create :transaction, user: user }
+  let(:headers) { valid_headers }
 
   describe 'GET /transactions' do
-    before { get '/transactions', params: { transaction: { user_id: user.id } } }
+    before { get '/transactions', headers: headers }
 
     it 'returns trsansactions' do
       expect(json).not_to be_empty
@@ -20,7 +21,9 @@ RSpec.describe 'Transactions API', type: :request do
   end
 
   describe 'GET /transaction/:id' do
-    before { get "/transactions/#{id}", params: { transaction: { user_id: user.id } } }
+    let(:params) { { transaction: { user_id: user.id } }.to_json }
+
+    before { get "/transactions/#{id}", params: params, headers: headers }
 
     context 'when transaction present' do
       let(:id) { transaction.id }
@@ -44,11 +47,11 @@ RSpec.describe 'Transactions API', type: :request do
   end
 
   describe 'POST /transactions' do
-    before { post '/transactions', params: params }
+    before { post '/transactions', params: params, headers: headers }
 
     context 'when valid params' do
       let(:title) { 'new transaction' }
-      let(:params) { {transaction: {user_id: user.id, title: title, direction: 'expence'}} }
+      let(:params) { { transaction: { user_id: user.id, title: title, direction: 'expence' } }.to_json }
 
       it 'returns status ok' do
         expect(response).to have_http_status(201)
@@ -60,7 +63,7 @@ RSpec.describe 'Transactions API', type: :request do
     end
 
     context 'when invalid params' do
-      let(:params) { { transaction: { user_id: user.id } } }
+      let(:params) { { transaction: { user_id: user.id } }.to_json }
 
       it 'returns status :unprocessable_entity' do
         expect(response).to have_http_status(422)
@@ -75,9 +78,9 @@ RSpec.describe 'Transactions API', type: :request do
   describe 'PUT /transactions/:id' do
     let(:title) { 'updated_title' }
     let(:id) { transaction.id }
-    let(:params) { { transaction: { user_id: user.id, title: title } } }
+    let(:params) { { transaction: { title: title } }.to_json }
 
-    before { put "/transactions/#{id}", params: params }
+    before { put "/transactions/#{id}", params: params, headers: headers }
 
     it 'returns status updated' do
       expect(response).to have_http_status(200)
@@ -90,9 +93,8 @@ RSpec.describe 'Transactions API', type: :request do
 
   describe 'DELETE /transactions/:id' do
     let(:id) { transaction.id }
-    let(:params) { { transaction: { user_id: user.id } } }
 
-    before { delete "/transactions/#{id}", params: params }
+    before { delete "/transactions/#{id}", headers: headers }
 
     it 'returns status no content' do
       expect(response).to have_http_status(204)

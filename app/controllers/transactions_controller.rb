@@ -1,11 +1,10 @@
 # frozen_string_literal: true
 
 class TransactionsController < ApplicationController
-  before_action :set_user
   before_action :set_transaction, only: %i[show update destroy]
 
   def index
-    @transactions = @current_user.transactions
+    @transactions = current_user.transactions
     json_response @transactions
   end
 
@@ -14,7 +13,7 @@ class TransactionsController < ApplicationController
   end
 
   def create
-    @transaction = @current_user.transactions.build(transaction_params)
+    @transaction = current_user.transactions.build(transaction_params)
     if @transaction.save
       json_response @transaction, status: :created
     else
@@ -39,14 +38,8 @@ class TransactionsController < ApplicationController
 
   private
 
-  def set_user
-    @current_user = User
-                    .includes(:transactions)
-                    .find(transaction_params[:user_id])
-  end
-
   def set_transaction
-    @transaction = @current_user.transactions.find(params[:id])
+    @transaction = current_user.transactions.find(params[:id])
   end
 
   def transaction_params
