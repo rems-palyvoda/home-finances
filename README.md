@@ -15,3 +15,5 @@ $ http :3000/transactions Authorization:'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.ey
 $ http POST :3000/transactions title=Beethoven direction='expence' Authorization:'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozLCJleHAiOjE0ODg5MDEyNjR9.7txvLgDzFdX5NIUGYb3W45oNIXinwB_ITu3jdlG5Dds'
 # Get created transactions
 $ http :3000/transactions Authorization:'eyJ0eXAiOiJKV1QiLC
+# Login created user
+$ http POST :3000/auth/login email='ivan@example.com' password='password'
