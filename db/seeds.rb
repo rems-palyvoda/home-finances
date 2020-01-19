@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
-owner = User.create! email: 'ivan@example.com'
+owner = User.create! email: 'ivan@example.com',
+                     password: 'password',
+                     password_confirmation: 'password'
 
 10.times do
   owner.transactions.create! title: Faker::Games::LeagueOfLegends.quote,
